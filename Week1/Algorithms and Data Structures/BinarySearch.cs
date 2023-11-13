@@ -26,8 +26,8 @@
     {
         public static int Search(int[] array, int target)
         {
-            int left = 0;
-            int right = array.Length - 1;
+            int left = 0; //initially, left is the first index
+            int right = array.Length - 1; //initially, right is the last index
 
             while (left <= right)
             {
@@ -42,12 +42,12 @@
                 // If the target is greater, ignore the left half of the array
                 if (array[mid] < target)
                 {
-                    left = mid + 1;
+                    left = mid + 1; //left becomes the first index of the right half
                 }
                 // If the target is smaller, ignore the right half of the array
                 else
                 {
-                    right = mid - 1;
+                    right = mid - 1; //right becomes the last index of the left half
                 }
             }
 
@@ -55,4 +55,15 @@
             return -1;
         }
     }
+
+    // PERFOMANCE
+
+    // The performance of the Binary Search algorithm is highly efficient for searching in a sorted array.
+
+    // TIME COMPLEXITY
+    // Best Case: O(1)
+    // Average and Worst Case: O(log n)
+
+    // SPACE COMPLEXITY
+    // O(1) for the iterative version.
 }

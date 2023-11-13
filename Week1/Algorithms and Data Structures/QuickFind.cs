@@ -15,16 +15,16 @@
     {
         private readonly int[] UFarray;
 
-        public QuickFind(int n)
+        public QuickFind(int n) //Constructor
         {
-            this.UFarray = new int[n];
+            UFarray = new int[n];
             for (int i = 0; i < n; i++)
             {
                 UFarray[i] = i;
             }
         }
 
-        public bool Connected(int a, int b)
+        public bool Connected(int a, int b) //Check if the values are equal, i.e. if they are connected
         {
             return UFarray[a] == UFarray[b];
         }
@@ -32,7 +32,7 @@
         public void Union(int a, int b)
         {
 
-            //It is important to get the values before because UFarray[a and b] are constantly changing throughout the loop, which would result in a bug
+            //We need to store these values before because UFarray[a and b] are constantly changing throughout the loop
             int valueofa = UFarray[a];
             int valueofb = UFarray[b];
 
@@ -40,18 +40,16 @@
             {
                 if (UFarray[i] == valueofa)             //If the value being checked is equal to the value inside index a
                 {
-                    UFarray[i] = valueofb;              //Swap the this value for the value inside index b
+                    UFarray[i] = valueofb;              //Swap this value for the value inside index b (b has "priority")
                 }
             }
 
         }
 
-        /*
-        PERFORMANCE
-        Array accesses
-            Constructor: N
-            Union: N
-            Connected: 1
-        */
+        // PERFORMANCE
+
+        // Initialization: O(N)
+        // Union: O(N) (Since it needs to iterate through the entire array to change IDs)
+        // Connected/Find: O(1) (Direct array access)
     }
 }

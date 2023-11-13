@@ -6,8 +6,8 @@
         {
 
             // The structure of the tree at the end doesn't matter much
-            // What matters is using quick union to connect two points and checking if they are truly connected
-            // When possible, we try to optimize the tree so it can increase perfomance for future tests
+            // What matters is using quick union to connect two points and then checking if they are truly connected
+            // When possible, the tree is optimized so it can increase perfomance for future tests
 
             QuickUnion myObj = new(10);
             Console.WriteLine(myObj.Connected(3, 9));
@@ -54,7 +54,7 @@
         public readonly int[] QUarray;
         public readonly int[] Size;  //This is a feature of Weighted Quick Union (performance improvement)
 
-        public QuickUnion(int n)
+        public QuickUnion(int n) //Constructor
         {
             QUarray = new int[n];
             Size = new int[n];
@@ -67,9 +67,9 @@
 
         public int GetRoot(int a)
         {
-            while (a != QUarray[a])
+            while (a != QUarray[a]) //Path compression (performance improvement). While we are searching the root, make every node point to its grandparent to flatten the tree even more
             {
-                QUarray[a] = QUarray[QUarray[a]]; //Path compression (performance improvement). While we are searching the root, make every node point to its grandparent to flatten the tree even more
+                QUarray[a] = QUarray[QUarray[a]]; 
                 a = QUarray[a];
             }
             return a;
@@ -84,7 +84,7 @@
         {
             int rootA = GetRoot(a);
             int rootB = GetRoot(b);
-            QUarray[rootA] = rootB; //in this case, B has the "priority", B will become the root of A, but you can easily do this the other way around
+            QUarray[rootA] = rootB; //In this case, B has "priority", B will become the root of A, but you can easily do this the other way around
         }
 
         public void WeightedUnion(int a, int b)
@@ -95,15 +95,15 @@
             {
                 return;
             }
-            //Always put the smaller tree below the larger one to flatten the trees and speed up getRoot() method 
-            if (Size[rootA] < Size[rootB])
+     
+            if (Size[rootA] < Size[rootB]) //Always put the smaller tree below the larger one to flatten the trees and speed up getRoot() method 
             {
                 QUarray[rootA] = rootB;
                 Size[rootB] += Size[rootA];
             }
             else
             {
-                QUarray[rootB] = rootA; //If the sizes are equal, it can go either way. In this case, A will become the root of B.
+                QUarray[rootB] = rootA; //If the sizes are equal, it can go either way. In this case, A has "priority", A will become the root of B.
                 Size[rootA] += Size[rootB];
             }
 
@@ -114,22 +114,21 @@
             return QUarray[n];
         }
 
-        /*
-        PERFORMANCE
-        Union Array accesses
-            Constructor: N
-            Union: N (worst case, when the tree becomes tall)
-            Connected: N (worst case, when the tree becomes tall)
+        // PERFORMANCE
 
-        Weighted Union Array accesses
-            Constructor: N
-            Union: lg N (amortized, due to tree height limitation with weighted union)
-            Connected: lg N (amortized, due to tree height limitation with weighted union)
+        // QUICK UNION
+        // Constructor: O(N)
+        // Union: O(N) - Worst case, when the tree becomes tall
+        // Connected: O(N) - Worst case, when the tree becomes tall
 
-        Weighted Union with path compression Array accesses
-            Constructor: N
-            Union: lg* N   - Think of lg* N as a number less than 5 (practically it represents linear time)
-            Connected: lg* N
-        */
-        }
+        // WEIGHTED QUICK UNION
+        // Constructor: O(N)
+        // Union: O(log N) - Because the tree is more balanced
+        // Connected: O(log N) - Worst case
+
+        // WEIGHTED QUICK UNION WITH PATH COMPRESSION
+        // Constructor: O(N)
+        // Union: O(log N) - In practice, this is very close to O(1) for all reasonable problem sizes
+        // Connected: O(log N) - Also practically constant time
     }
+}
