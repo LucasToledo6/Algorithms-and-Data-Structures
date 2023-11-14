@@ -12,10 +12,11 @@
             Console.WriteLine(test.ConfidenceHi());
         }
     }
+
     public class PercolationStats
     {
-        public Percolation[] percolationObject; //create an array of percolation objects
-        public double[] percolationThreshold; //create an array to store the threshold for each test
+        public Percolation[] percolationObject; //creates an array of percolation objects
+        public double[] percolationThreshold; //creates an array to store the threshold for each test
         public int numberOfTrials;
         public int N;
 
@@ -33,9 +34,9 @@
                 while (!percolationObject[i].Percolates()) //until this object percolates, keep opening the sites
                 {
                     int[] index = new int[2];
-                    index[0] = rand.Next(1, n + 1); //generates a random number from 1 to 4
+                    index[0] = rand.Next(1, n + 1); //generates a random number from 1 to n
                     index[1] = rand.Next(1, n + 1);
-                    percolationObject[i].Open(index[0], index[1]); //since this is an experiment to obtain estimates, you can use random numbers
+                    percolationObject[i].Open(index[0], index[1]); //since this is an experiment to obtain estimates, we use random numbers
                                                                    //let the program do all the work
                 }
                 percolationThreshold[i] = (double)percolationObject[i].NumberOfOpenSites() / N; //number of sites that were necessary to open so that the system percolated
@@ -43,6 +44,7 @@
             }
         }
 
+        // Sample mean of percolation threshold
         public double Mean()
         {
             double sum = 0;
@@ -54,6 +56,7 @@
             return sum / numberOfTrials;
         }
 
+        // Sample standard deviation of percolation threshold
         public double Stddev()
         {
             double sum = 0;
@@ -66,11 +69,13 @@
             return Math.Sqrt(sum / (numberOfTrials - 1));
         }
 
+        // Low endpoint of 95% confidence interval
         public double ConfidenceLo()
         {
             return Mean() - (1.96 * Stddev()) / (Math.Sqrt(numberOfTrials));
         }
 
+        // High endpoint of 95% confidence interval
         public double ConfidenceHi()
         {
             return Mean() + (1.96 * Stddev()) / (Math.Sqrt(numberOfTrials));
